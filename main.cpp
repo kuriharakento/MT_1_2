@@ -259,25 +259,27 @@ void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, con
 			//world座標系でのa,b,c,を求める
 			Vector3 a, b, c;
 			a = {
-				(sphere.center.x + sphere.radius) * std::cos(lat) * std::cos(lon),
-				(sphere.center.y + sphere.radius) * std::sin(lat),
-				(sphere.center.z + sphere.radius) * std::cos(lat) * std::sin(lon)
+				(sphere.radius) * std::cos(lat) * std::cos(lon),
+				(sphere.radius) * std::sin(lat),
+				(sphere.radius) * std::cos(lat) * std::sin(lon)
 			};
 			b = {
-				(sphere.center.x + sphere.radius) * std::cos(lat + (pi / kSubdivision)) * std::cos(lon),
-				(sphere.center.y + sphere.radius) * std::sin(lat + (pi / kSubdivision)),
-				(sphere.center.z + sphere.radius) * std::cos(lat + (pi / kSubdivision)) * std::sin(lon)
+				(sphere.radius) * std::cos(lat + (pi / kSubdivision)) * std::cos(lon),
+				(sphere.radius) * std::sin(lat + (pi / kSubdivision)),
+				(sphere.radius) * std::cos(lat + (pi / kSubdivision)) * std::sin(lon)
 			};
 			c = {
-				(sphere.center.x + sphere.radius) * std::cos(lat) * std::cos(lon + ((pi * 2) / kSubdivision)),
-				(sphere.center.y + sphere.radius) * std::sin(lat),
-				(sphere.center.z + sphere.radius) * std::cos(lat) * std::sin(lon + ((pi * 2) / kSubdivision))
+				(sphere.radius) * std::cos(lat) * std::cos(lon + ((pi * 2) / kSubdivision)),
+				(sphere.radius) * std::sin(lat),
+				(sphere.radius) * std::cos(lat) * std::sin(lon + ((pi * 2) / kSubdivision))
 			};
 
 			//a,b,cをScreen座標系まで変換...
-			Matrix4x4 aWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, a);
-			Matrix4x4 bWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, b);
-			Matrix4x4 cWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, c);
+			Matrix4x4 aWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, sphere.center);
+			Matrix4x4 bWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, sphere.center);
+			Matrix4x4 cWorldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, sphere.center);
+
+			
 
 			Matrix4x4 awvpMatrix = Multiply(aWorldMatrix, viewProjectionMatrix);
 			Matrix4x4 bwvpMatrix = Multiply(bWorldMatrix, viewProjectionMatrix);
